@@ -116,7 +116,7 @@ class CSPDarknet(nn.Module):
 
         # dark2
         self.dark2 = nn.Sequential(
-            Conv(base_channels, base_channels * 2, 3, 2, act=act),
+            Conv(base_channels, base_channels * 2, 3, 2, act=act),                        
             CSPLayer(
                 base_channels * 2,
                 base_channels * 2,
@@ -132,7 +132,8 @@ class CSPDarknet(nn.Module):
             CSPLayer(
                 base_channels * 4,
                 base_channels * 4,
-                n=base_depth * 3,
+                #n=base_depth * 3
+                n=base_depth,
                 depthwise=depthwise,
                 act=act,
             ),
@@ -153,7 +154,7 @@ class CSPDarknet(nn.Module):
         # dark5
         self.dark5 = nn.Sequential(
             Conv(base_channels * 8, base_channels * 16, 3, 2, act=act),
-            SPPBottleneck(base_channels * 16, base_channels * 16, activation=act),
+            #SPPBottleneck(base_channels * 16, base_channels * 16, activation=act),
             CSPLayer(
                 base_channels * 16,
                 base_channels * 16,
