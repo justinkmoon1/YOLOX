@@ -75,7 +75,7 @@ class Exp(BaseExp):
         self.warmup_lr = 0
         self.min_lr_ratio = 0.05
         # learning rate for one image. During training, lr will multiply batchsize.
-        self.basic_lr_per_img = 0.0001 / 16.0
+        self.basic_lr_per_img = 0.001 / 16.0
         # name of LRScheduler
         self.scheduler = "yoloxwarmcos"
         # last #epoch to close augmention like mosaic
@@ -101,15 +101,16 @@ class Exp(BaseExp):
 
         # -----------------  testing config ------------------ #
         # output image size during evaluation/test
-        self.test_size = (640, 640)
+        self.test_size = (416, 416)
         # confidence threshold during evaluation/test,
         # boxes whose scores are less than test_conf will be filtered
-        self.test_conf = 0.01
+        self.test_conf = 0.25
         # nms threshold
         self.nmsthre = 0.65
 
     def get_model(self):
         from yolox.models import YOLOX, YOLOPAFPN, YOLOXHead
+
 
         def init_yolo(M):
             for m in M.modules():
@@ -120,6 +121,7 @@ class Exp(BaseExp):
         if getattr(self, "model", None) is None:
             in_channels = [256, 512, 1024]
             backbone = YOLOPAFPN(self.depth, self.width, in_channels=in_channels, act=self.act)
+            #backbone = modify_mobilenetv3(1)
             head = YOLOXHead(self.num_classes, self.width, in_channels=in_channels, act=self.act)
             self.model = YOLOX(backbone, head)
 
